@@ -2,6 +2,8 @@ import pygame
 import sys
 import time
 
+done = False
+
 pygame.joystick.init()
 
 print pygame.joystick.get_count()
@@ -17,16 +19,18 @@ print _joystick.get_numbuttons()
 print _joystick.get_numhats()
 print _joystick.get_axis(0)
 
- axes = [ 0.0 ] * your_joystick.get_numaxes()
-    buttons = [ False ] * your_joystick.get_numbuttons()
+joystick_count = pygame.joystick.get_count()
+for i in range(joystick_count):
+    joystick = pygame.joystick.Joystick(i)
+    joystick.init()
+while done==False:
+    for i in range(joystick_count):
+        axis = joystick.get_axis( i )
+        print ("Axis {} value: {:>6.3f}".format(i, axis) )
 
-    while self.keep_alive:
-        event = pygame.event.wait()
-        if event.type == pygame.QUIT:
-             self.keep_alive = False
-        elif event.type == pygame.JOYAXISMOTION:
-            e = event.dict
-            axes[e['axis']] = e['value']
-        elif event.type in [pygame.JOYBUTTONUP, pygame.JOYBUTTONDOWN ]:
-            e = event.dict
-            buttons[e['button']] ^= True
+    buttons = joystick.get_numbuttons()
+    print("Number of buttons: {}".format(buttons) )
+    for i in range( buttons ):
+        button = joystick.get_button( i )
+        print("Button {:>2} value: {}".format(i,button) )
+        
